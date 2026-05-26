@@ -25,53 +25,42 @@ import org.sonar.api.server.http.HttpResponse;
 import org.sonar.api.web.FilterChain;
 import org.sonar.api.web.HttpFilter;
 import org.sonar.api.web.UrlPattern;
-
 import java.io.IOException;
 
 @ServerSide
 public class AutoLoginFilter extends HttpFilter {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(AutoLoginFilter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AutoLoginFilter.class);
 
-  private static final String LOGIN_URL = "/sessions/new";
-  private static final String OIDC_URL = "/sessions/init/" + Constants.OIDC_IDENTITY_PROVIDER_KEY + "?return_to=";
-  private static final String SKIP_REQUEST_PARAM = "auto-login=false";
+    private static final String LOGIN_URL = "/sessions/new";
 
-  private final OidcConfiguration config;
+    private static final String OIDC_URL = "/sessions/init/" + Constants.OIDC_IDENTITY_PROVIDER_KEY + "?return_to=";
 
-  public AutoLoginFilter(OidcConfiguration config) {
-    this.config = config;
-  }
+    private static final String SKIP_REQUEST_PARAM = "auto-login=false";
 
-  @Override
-  public UrlPattern doGetPattern() {
-    return UrlPattern.create(LOGIN_URL);
-  }
+    private final OidcConfiguration config;
 
-  @Override
-  public void doFilter(HttpRequest request, HttpResponse response, FilterChain chain) throws IOException {
-    if (config.isEnabled() && config.isAutoLogin()) {
-      String referrer = request.getHeader("referer");
-      LOGGER.debug("Referrer: {}", referrer);
-
-      // Skip if disabled via request parameter
-      if (referrer == null || !referrer.endsWith(SKIP_REQUEST_PARAM)) {
-        String loginPageUrl = config.getBaseUrl() + OIDC_URL + config.getContextPath() + "/projects";
-        LOGGER.debug("Redirecting to OIDC login page: {}", loginPageUrl);
-        response.sendRedirect(loginPageUrl);
-        return;
-      }
+    public AutoLoginFilter(OidcConfiguration config) {
+        this.config = config;
     }
-    chain.doFilter(request, response);
-  }
 
-  @Override
-  public void init(){
-    // Not needed here
-  }
-  @Override
-  public void destroy() {
-    // Not needed here
-  }
+    @Override
+    public UrlPattern doGetPattern() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 
+    @Override
+    public void doFilter(HttpRequest request, HttpResponse response, FilterChain chain) throws IOException {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    @Override
+    public void init() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    @Override
+    public void destroy() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

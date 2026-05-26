@@ -22,13 +22,8 @@ import org.sonar.api.SonarQubeSide;
 
 public class AuthOidcPlugin implements Plugin {
 
-  @Override
-  public void define(Context context) {
-    if (context.getRuntime().getSonarQubeSide() == SonarQubeSide.SERVER) {
-      context.addExtensions(OidcConfiguration.class, OidcClient.class, OidcIdentityProvider.class,
-          UserIdentityFactory.class, AutoLoginFilter.class);
-      context.addExtensions(OidcConfiguration.definitions());
+    @Override
+    public void define(Context context) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-  }
-
 }

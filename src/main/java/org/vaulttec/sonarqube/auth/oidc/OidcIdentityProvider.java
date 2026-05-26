@@ -30,66 +30,52 @@ import org.sonar.api.server.authentication.UserIdentity;
 @ServerSide
 public class OidcIdentityProvider implements OAuth2IdentityProvider {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(OidcIdentityProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OidcIdentityProvider.class);
 
-  private final OidcConfiguration config;
-  private final OidcClient client;
-  private final UserIdentityFactory userIdentityFactory;
+    private final OidcConfiguration config;
 
-  public OidcIdentityProvider(OidcConfiguration config, OidcClient client, UserIdentityFactory userIdentityFactory) {
-    this.config = config;
-    this.client = client;
-    this.userIdentityFactory = userIdentityFactory;
-  }
+    private final OidcClient client;
 
-  @Override
-  public String getKey() {
-    return Constants.OIDC_IDENTITY_PROVIDER_KEY;
-  }
+    private final UserIdentityFactory userIdentityFactory;
 
-  @Override
-  public String getName() {
-    return config.loginButtonText();
-  }
-
-  @Override
-  public Display getDisplay() {
-    return Display.builder().setIconPath(config.iconPath()).setBackgroundColor(config.backgroundColor()).build();
-  }
-
-  @Override
-  public boolean isEnabled() {
-    return config.isEnabled();
-  }
-
-  @Override
-  public boolean allowsUsersToSignUp() {
-    return config.allowUsersToSignUp();
-  }
-
-  @Override
-  public void init(InitContext context) {
-    LOGGER.debug("Starting authentication workflow");
-    if (!isEnabled()) {
-      throw new IllegalStateException("OpenID Connect authentication is disabled");
+    public OidcIdentityProvider(OidcConfiguration config, OidcClient client, UserIdentityFactory userIdentityFactory) {
+        this.config = config;
+        this.client = client;
+        this.userIdentityFactory = userIdentityFactory;
     }
-    String state = context.generateCsrfState();
-    AuthenticationRequest authenticationRequest = client.createAuthenticationRequest(context.getCallbackUrl(), state);
-    LOGGER.debug("Redirecting to authentication endpoint");
-    context.redirectTo(authenticationRequest.toURI().toString());
-  }
 
-  @Override
-  public void callback(CallbackContext context) {
-    LOGGER.debug("Handling authentication response");
-    context.verifyCsrfState();
-    AuthorizationCode authorizationCode = client.getAuthorizationCode(context.getHttpRequest());
-    UserInfo userInfo = client.getUserInfo(authorizationCode, context.getCallbackUrl());
-    UserIdentity userIdentity = userIdentityFactory.create(userInfo);
-    LOGGER.debug("Authenticating user '{}' with groups {}", userIdentity.getProviderLogin(), userIdentity.getGroups());
-    context.authenticate(userIdentity);
-    LOGGER.debug("Redirecting to requested page");
-    context.redirectToRequestedPage();
-  }
+    @Override
+    public String getKey() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 
+    @Override
+    public String getName() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    @Override
+    public Display getDisplay() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    @Override
+    public boolean isEnabled() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    @Override
+    public boolean allowsUsersToSignUp() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    @Override
+    public void init(InitContext context) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    @Override
+    public void callback(CallbackContext context) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }
